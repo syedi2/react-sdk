@@ -42,6 +42,7 @@ import TextArea from '../components/forms/TextArea';
 import TextContent from '../components/forms/TextContent';
 import TextInput from '../components/forms/TextInput';
 import Time from '../components/forms/Time';
+import Text from '../components/forms/Text';
 import ToDo from '../components/ToDo';
 import URLComponent from '../components/forms/URL';
 import View from '../components/View';
@@ -288,6 +289,10 @@ const getComponent = (c11nEnv, declarative) => {
 
       case "TextInput":
         component = TextInput;
+        break;
+
+      case "Text":
+        component = Text;
         break;
 
       case "Time":
