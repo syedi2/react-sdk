@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,15 +8,29 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import { buildFieldsForTable } from './helpers';
+import { buildFieldsForTable, getAddRowCallback } from './helpers';
+import { TextField } from "@material-ui/core";
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((/* theme */) => ({
   label: {
     margin: "8px 16px"
   },
+  header: {
+    background: "#f5f5f5"
+  },
+  tableCell: {
+    borderRight: "1px solid lightgray",
+    padding: "8px"
+  },
 }));
 
 export default function SimpleTable(props) {
+  console.log('SimpleTable props', props);
+  const [rowData, setRowData]: Array<any> = useState([]);
   const classes = useStyles();
   const {
     getPConnect,
@@ -24,7 +38,8 @@ export default function SimpleTable(props) {
     children,
     renderMode,
     presets,
-    label
+    label,
+    contextClass
   } = props;
 
   const resolvedFields = children?.[0]?.children || presets?.[0].children?.[0].children;
@@ -60,14 +75,7 @@ export default function SimpleTable(props) {
   const requestedReadOnlyMode = renderMode === 'ReadOnly';
   let readOnlyMode = renderMode === 'ReadOnly';
 
-  // TEMPORARILY show all tables as read only
-  if (!readOnlyMode) {
-    // eslint-disable-next-line no-console
-    console.warn(
-      `SimpleTable: currently not editable. Displaying requested editable table as READ ONLY!`
-    );
-    readOnlyMode = true;
-  }
+  const editableMode = renderMode === 'Editable';
 
   // Nebula has other handling for isReadOnlyMode but has Cosmos-specific code
   //  so ignoring that for now...
@@ -77,6 +85,8 @@ export default function SimpleTable(props) {
   //  Nebula does). It will also have the "label", and "meta" contains the original,
   //  unchanged config info. For now, much of the info here is carried over from
   //  Nebula and we may not end up using it all.
+  console.log('rawFields', rawFields);
+  console.log('resolvedFields', resolvedFields);
   const fieldDefs = buildFieldsForTable(rawFields, resolvedFields, readOnlyMode);
 
   // end of from Nebula
@@ -113,7 +123,7 @@ export default function SimpleTable(props) {
     for ( const key of refKeys) {
       valBuilder = valBuilder[key];
     }
-
+    console.log('valBuilder', valBuilder);
     if (requestedReadOnlyMode || inRowField?.config?.readOnly) {
       // Show the requested data as a readOnly entry in the table.
       return valBuilder;
@@ -122,9 +132,22 @@ export default function SimpleTable(props) {
       const theEditComponent = inRowField.type ? inRowField.type : "not specified";
       // For, display (readonly), the initial value (if there is one - otherwise, try placeholder)
       //  and which component should be used for editing
-      return `${ (valBuilder !== "") ? valBuilder: thePlaceholder} (edit with ${theEditComponent})`;
+      console.log('valBuilder1', valBuilder, thePlaceholder);
+      return `${ (valBuilder !== "") ? valBuilder: thePlaceholder}`;
     }
   }
+
+  function handleInputChange(event, index) {
+    const { name, value } = event.target;
+    const list = [...rowData];
+    list[index][name] = value;
+    console.log(name, value, index);
+    console.log('event', event);
+    console.log('event', event);
+    console.log('rowData', rowData);
+    setRowData(list);
+  }
+
 
 
   // return the field from the incoming fields array that has "name" of
@@ -147,24 +170,28 @@ export default function SimpleTable(props) {
   //  in the table. So, iterate over referenceList to create the dataRows that
   //  we're using as the table's dataSource
 
-  // re-initialize rowData each time we re-build it
-  const rowData: Array<Object> = [];
+  useEffect(() => {
+    let data: Array<any> = [];
+    for (const row of referenceList) {
 
-  for (const row of referenceList) {
-    const dataForRow: Object = {};
+      const dataForRow: Object = {};
 
-    for ( const col of displayedColumns ) {
-      const colKey: string = col;
+      for ( const col of displayedColumns ) {
+        const colKey: string = col;
 
-      const theProcessedField = getFieldFromFieldArray(colKey, processedFields);
+        const theProcessedField = getFieldFromFieldArray(colKey, processedFields);
 
-      const theVal = getRowValue(row, colKey, theProcessedField);
+        const theVal = getRowValue(row, colKey, theProcessedField);
 
-      dataForRow[colKey] = theVal;
+        dataForRow[colKey] = theVal ? theVal : "";
+      }
+
+      data.push(dataForRow);
     }
+    setRowData(data);
+  }, []);
 
-    rowData.push(dataForRow);
-  }
+  const addRow = getAddRowCallback(getPConnect(), rowData.length, contextClass);
 
   // These are the data structures referred to in the html file.
   //  These are the relationships that make the table work
@@ -191,20 +218,20 @@ export default function SimpleTable(props) {
   // Using string literal to force the line break
   const tempPreamble = `SimpleTable component not complete in the React SDK. This is a work in progress...
     ${ requestedReadOnlyMode ? 'Table is readOnly' : 'You have requested an editable table which is not yet supported. Displaying in a modified readOnly mode.' }`;
-
-
+  console.log('rowData', rowData);
+  console.log('displayedColumns', displayedColumns);
   return (
     <React.Fragment>
-      {!requestedReadOnlyMode && <Typography variant='body1' style={{whiteSpace: 'pre-line'}}>
+      {/* {!requestedReadOnlyMode && <Typography variant='body1' style={{whiteSpace: 'pre-line'}}>
         {tempPreamble}
-      </Typography>}
+      </Typography>} */}
       <TableContainer component={Paper} style={{margin: "4px 0px"}}>
         {label && <h3 className={classes.label}>{label}</h3>}
         <Table>
-          <TableHead>
+          <TableHead className={classes.header}>
             <TableRow>
-              {processedFields.map((field: any, index) => {
-                return <TableCell key={`head-${displayedColumns[index]}`}>{field.config.label}</TableCell>
+              {fieldDefs.map((field: any, index) => {
+                return <TableCell key={`head-${displayedColumns[index]}`} className={classes.tableCell}>{field.label ? field.label : " "}</TableCell>
               })}
             </TableRow>
           </TableHead>
@@ -214,14 +241,41 @@ export default function SimpleTable(props) {
               return <TableRow key={theKey}>
                 {displayedColumns.map((colKey) => {
                   const theColKey = `data-${index}-${colKey}`;
-                  return <TableCell key={theColKey}>
-                    {row[colKey]}
+                  return <TableCell key={theColKey} className={classes.tableCell}>
+                    {requestedReadOnlyMode && row[colKey]}
+                    {/* {editableMode && <TextField name="theColKey" onChange={handleChange}/>} */}
+                    {(editableMode && colKey != 'DeleteIcon') &&
+                      <TextField name={colKey} onChange={(e) => handleInputChange(e, index)} fullWidth
+                      variant="outlined" value={row[colKey]} placeholder="" InputProps={{
+                        inputProps: {style: {height: '18px', padding: '8px'}}
+                      }}/>
+                    }
+                    {(editableMode && colKey == 'DeleteIcon') &&
+                    <IconButton size="small" aria-label="close" color="inherit">
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>}
                   </TableCell>
                 })}
               </TableRow>
             })}
           </TableBody>
         </Table>
+        {editableMode && (
+        <div className="add-button">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              addRow();
+              getPConnect().clearErrorMessages({
+                property: getPConnect().getStateProps()?.referenceList?.substring(1),
+              });
+            }}
+          >
+           <AddIcon /> Add
+          </Button>
+        </div>
+        )}
         {rowData && rowData.length === 0 && <div className="no-records">No records found.</div>}
       </TableContainer>
 

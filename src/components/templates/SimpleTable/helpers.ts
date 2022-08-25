@@ -203,9 +203,10 @@ export const createMetaForTable = (fields, renderMode) => {
  * This method returns a callBack function for Add action.
  * @param {object} pConnect - PConnect object
  * @param {number} index - index of the page list to add
+ * @param {number} classID - classID of the context
  */
-export const getAddRowCallback = (pConnect, index) => {
-  return () => pConnect.getListActions().insert({}, index);
+export const getAddRowCallback = (pConnect, index, classID) => {
+  return () => pConnect.getListActions().insert({classID}, index);
 };
 
 /**
