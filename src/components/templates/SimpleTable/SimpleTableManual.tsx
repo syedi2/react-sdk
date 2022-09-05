@@ -247,7 +247,7 @@ export default function SimpleTableManual(props) {
                     </TableCell>
                   })}
                   {showDeleteButton && <TableCell>
-                    <button type='button' className='psdk-utility-button' onClick={() => deleteRecord(index)}>
+                    <button id="delete-button" type='button' className='psdk-utility-button' onClick={() => deleteRecord(index)}>
                       <img className='psdk-utility-card-action-svg-icon' src={menuIconOverride$}></img>
                     </button>
                   </TableCell>}
@@ -269,8 +269,8 @@ export default function SimpleTableManual(props) {
             })}
           </TableBody>
         </Table>
-        {readOnlyMode && rowData && rowData.length === 0 && <div className='no-records'>No records found.</div>}
-        {editableMode && referenceList && referenceList.length === 0 && <div className='no-records'>No records found.</div>}
+        {readOnlyMode && rowData && rowData.length === 0 && <div className='no-records' id='no-records'>No records found.</div>}
+        {editableMode && referenceList && referenceList.length === 0 && <div className='no-records' id='no-records'>No records found.</div>}
       </TableContainer>
       {showAddRowButton && (
         <div style={{fontSize: '1rem'}}>
