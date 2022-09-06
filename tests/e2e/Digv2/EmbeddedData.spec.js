@@ -155,11 +155,11 @@ test.describe('E2E test', () => {
     assignment = page.locator('div[id="Assignment"]');
 
     /** Testing the values present on Confirm screen */
-    // await expect(assignment.locator('td:has-text("Global St") >> nth=1')).toBeVisible();
-    // await expect(assignment.locator('td:has-text("California") >> nth=1')).toBeVisible();
-    // await expect(assignment.locator('td:has-text("AK") >> nth=1')).toBeVisible();
-    // await expect(assignment.locator('td:has-text("03142") >> nth=1')).toBeVisible();
-    // await expect(assignment.locator('td:has-text("+16175451212") >> nth=1')).toBeVisible();
+    await expect(assignment.locator('input[value="Global St"]')).toBeVisible();
+    await expect(assignment.locator('td:has-text("California")')).toBeVisible();
+    await expect(assignment.locator('td:has-text("AK")')).toBeVisible();
+    await expect(assignment.locator('td:has-text("03142")')).toBeVisible();
+    await expect(assignment.locator('td:has-text("+16175451212")')).toBeVisible();
 
     await page.locator('button:has-text("Previous")').click();
 
@@ -168,11 +168,11 @@ test.describe('E2E test', () => {
     await page.locator('button:has-text("Next")').click();
 
     /** Testing the deleted row values which should n't be present */
-    // await expect(assignment.locator('input[value="Main St"] >> nth=1')).toBeHidden();
-    // await expect(assignment.locator('input[value="Cambridge"] >> nth=1')).toBeHidden();
-    // await expect(assignment.locator('input[value="MA"] >> nth=1')).toBeHidden();
-    // await expect(assignment.locator('input[value="02142"] >> nth=1')).toBeHidden();
-    // await expect(assignment.locator('td:has-text("+16175551212") >> nth=1')).toBeHidden();
+    await expect(assignment.locator('input[value="Main St"] >> nth=1')).toBeHidden();
+    await expect(assignment.locator('input[value="Cambridge"] >> nth=1')).toBeHidden();
+    await expect(assignment.locator('input[value="MA"] >> nth=1')).toBeHidden();
+    await expect(assignment.locator('input[value="02142"] >> nth=1')).toBeHidden();
+    await expect(assignment.locator('td:has-text("+16175551212") >> nth=1')).toBeHidden();
 
     await page.locator('button:has-text("Previous")').click();
 
