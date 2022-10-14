@@ -1,8 +1,12 @@
 import React, { useEffect, useState, useContext, createElement } from "react";
 import PropTypes from "prop-types";
 import { Box, CircularProgress } from "@material-ui/core";
-import createPConnectComponent from "../../bridge/react_pconnect";
-import StoreContext from "../../bridge/Context/StoreContext";
+
+// import createPConnectComponent from "../../bridge/react_pconnect";
+// import StoreContext from "../../bridge/Context/StoreContext";
+import StoreContext from "@pega/react-sdk-bridge-infra/lib/bridge/Context/StoreContext";
+import createPConnectComponent from "@pega/react-sdk-bridge-infra/lib/bridge/react_pconnect";
+
 
 // ViewContainer can emit View
 // import View from '../View';

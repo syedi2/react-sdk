@@ -14,7 +14,10 @@ import Link from '@material-ui/core/Link';
 import { getReferenceList } from '../../../helpers/field-group-utils';
 import { Utils } from '../../../helpers/utils';
 import { createElement } from 'react';
-import createPConnectComponent from '../../../../src/bridge/react_pconnect';
+
+// import createPConnectComponent from '../../../../src/bridge/react_pconnect';
+import createPConnectComponent from "@pega/react-sdk-bridge-infra/lib/bridge/react_pconnect";
+
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';

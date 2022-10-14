@@ -3,8 +3,11 @@ import ReactDOM from "react-dom";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
-import StoreContext from "../../bridge/Context/StoreContext";
-import createPConnectComponent from "../../bridge/react_pconnect";
+// import StoreContext from "../../bridge/Context/StoreContext";
+// import createPConnectComponent from "../../bridge/react_pconnect";
+import StoreContext from "@pega/react-sdk-bridge-infra/lib/bridge/Context/StoreContext";
+import createPConnectComponent from "@pega/react-sdk-bridge-infra/lib/bridge/react_pconnect";
+
 import { SdkConfigAccess } from '../../helpers/config_access';
 import { compareSdkPCoreVersions } from '../../helpers/versionHelpers';
 import { loginIfNecessary } from '../../helpers/authManager';

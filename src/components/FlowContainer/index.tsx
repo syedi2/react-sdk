@@ -10,8 +10,11 @@ import { Alert } from '@material-ui/lab';
 import Assignment from '../Assignment';
 import ToDo from "../ToDo";
 
-import createPConnectComponent from '../../bridge/react_pconnect';
-import StoreContext from "../../bridge/Context/StoreContext";
+// import createPConnectComponent from '../../bridge/react_pconnect';
+// import StoreContext from "../../bridge/Context/StoreContext";
+import StoreContext from "@pega/react-sdk-bridge-infra/lib/bridge/Context/StoreContext";
+import createPConnectComponent from "@pega/react-sdk-bridge-infra/lib/bridge/react_pconnect";
+
 import DayjsUtils from "@date-io/dayjs";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 

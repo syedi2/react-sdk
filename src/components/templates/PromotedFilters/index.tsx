@@ -1,7 +1,10 @@
 import { useCallback, useMemo, useState, createElement, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import createPConnectComponent from "../../../bridge/react_pconnect";
+
+// import createPConnectComponent from "../../../bridge/react_pconnect";
+import createPConnectComponent from "@pega/react-sdk-bridge-infra/lib/bridge/react_pconnect";
+
 import ListView from '../ListView';
 import React from "react";
 import './PromotedFilters.css';

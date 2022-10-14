@@ -4,9 +4,12 @@ import PropTypes, { object } from "prop-types";
 import isEqual from 'lodash.isequal';
 // import ReAuthMessageModal from "../ReAuthenticationModal";
 import { Box, CircularProgress } from "@material-ui/core";
-import createPConnectComponent from "../../bridge/react_pconnect";
-import { LazyMap as LazyComponentMap } from "../../components_map";
-import StoreContext from "../../bridge/Context/StoreContext";
+
+// import StoreContext from "../../bridge/Context/StoreContext";
+// import createPConnectComponent from "../../bridge/react_pconnect";
+import StoreContext from "@pega/react-sdk-bridge-infra/lib/bridge/Context/StoreContext";
+import createPConnectComponent from "@pega/react-sdk-bridge-infra/lib/bridge/react_pconnect";
+import { LazyMap as LazyComponentMap } from "@pega/react-sdk-bridge-infra/lib/components_map";
 
 declare const PCore;
 

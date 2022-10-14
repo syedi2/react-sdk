@@ -5,8 +5,10 @@ import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 
-import StoreContext from "../../../bridge/Context/StoreContext";
-import createPConnectComponent from "../../../bridge/react_pconnect";
+// import StoreContext from "../../../bridge/Context/StoreContext";
+// import createPConnectComponent from "../../../bridge/react_pconnect";
+import StoreContext from "@pega/react-sdk-bridge-infra/lib/bridge/Context/StoreContext";
+import createPConnectComponent from "@pega/react-sdk-bridge-infra/lib/bridge/react_pconnect";
 
 import { gbLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '../../../helpers/authManager';
 

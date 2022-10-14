@@ -1,7 +1,8 @@
 import React, { createElement } from "react";
 import PropTypes from "prop-types";
 
-import createPConnectComponent from '../../../bridge/react_pconnect';
+// import createPConnectComponent from '../../../bridge/react_pconnect';
+import createPConnectComponent from "@pega/react-sdk-bridge-infra/lib/bridge/react_pconnect";
 
 import './DefaultForm.css';
 

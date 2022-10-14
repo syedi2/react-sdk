@@ -4,7 +4,8 @@ import { Box, Card, CircularProgress } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 
 
-import createPConnectComponent from "../../bridge/react_pconnect";
+// import createPConnectComponent from "../../bridge/react_pconnect";
+import createPConnectComponent from "@pega/react-sdk-bridge-infra/lib/bridge/react_pconnect";
 
 declare const PCore;
 

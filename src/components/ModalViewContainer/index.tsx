@@ -4,7 +4,10 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core/styles';
-import createPConnectComponent from "../../bridge/react_pconnect";
+
+// import createPConnectComponent from "../../bridge/react_pconnect";
+import createPConnectComponent from "@pega/react-sdk-bridge-infra/lib/bridge/react_pconnect";
+
 import Assignment from "../Assignment";
 import * as isEqual from 'fast-deep-equal';
 

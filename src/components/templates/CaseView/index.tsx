@@ -7,7 +7,9 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
-import StoreContext from "../../../bridge/Context/StoreContext";
+// import StoreContext from "../../../bridge/Context/StoreContext";
+import StoreContext from "@pega/react-sdk-bridge-infra/lib/bridge/Context/StoreContext";
+
 import CaseViewActionsMenu from "./CaseViewActionsMenu";
 import VerticalTabs from '../../VerticalTabs';
 import DeferLoad from '../../DeferLoad';
