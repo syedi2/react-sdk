@@ -250,6 +250,10 @@ const constellationInit = (authConfig, tokenInfo, authTokenUpdated, fnReauth) =>
   // Turn off dynamic load components (should be able to do it here instead of after load?)
   constellationBootConfig.dynamicLoadComponents = false;
 
+  if( sdkConfigServer.customSvcPkg ) {
+    constellationBootConfig.customSvcPkg = sdkConfigServer.customSvcPkg;
+  }
+
   if( gbC11NBootstrapInProgress ) {
     return;
   } else {
