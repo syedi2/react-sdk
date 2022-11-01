@@ -12,6 +12,9 @@ import { SdkConfigAccess } from '../../helpers/config_access';
 import { compareSdkPCoreVersions } from '../../helpers/versionHelpers';
 import { loginIfNecessary } from '../../helpers/authManager';
 
+import { SdkComponentMap, getSdkComponentMap } from '@pega/react-sdk-bridge-infra/lib/bridge/helpers/sdk_component_map'; // was  '../../helpers/component_map';
+import localSdkComponentMap from '../../../sdk-local-component-map';
+
 declare const PCore: any;
 declare const myLoadPortal: any;
 
@@ -63,6 +66,13 @@ export default function FullPortal() {
    * @param inRenderObj the initial, top-level PConnect object to render
    */
    function initialRender(inRenderObj) {
+
+    // eslint-disable-next-line no-debugger
+    debugger;
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+    const theLocalComps = SdkComponentMap.getLocalComponentMap();
+
+    debugger;
 
     // modified from react_root.js render
     const {
@@ -122,7 +132,19 @@ export default function FullPortal() {
       // Check that we're seeing the PCore version we expect
       compareSdkPCoreVersions();
 
-      initialRender(renderObj);
+      // get the SdkComponentMap initialized with our local components from localSdkComponentMap
+      debugger;
+      getSdkComponentMap(localSdkComponentMap).then( (theComponentMap: any) => {
+        // eslint-disable-next-line no-debugger
+        debugger;
+        // eslint-disable-next-line no-console
+        console.log(`theComponentMap: ${JSON.stringify(theComponentMap.sdkComponentMap['localComponentMap'])}`);
+        // eslint-disable-next-line no-console
+        console.log(`SdkComponentMap: ${JSON.stringify(theComponentMap.sdkComponentMap['pegaProvidedComponentMap'])}`);
+
+        initialRender(renderObj);
+      })
+
     });
 
     // load the Portal and handle the onPCoreEntry response that establishes the

@@ -31,6 +31,10 @@ module.exports = (env, argv) => {
           to: './'
         },
         {
+          from: './sdk-local-component-map.js',
+          to: './'
+        },
+        {
           from: './src/helpers/auth.js',
           to: './'
         },

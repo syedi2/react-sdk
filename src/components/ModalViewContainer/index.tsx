@@ -1,23 +1,17 @@
 import React, { useEffect, useRef, useState, createElement } from 'react';
 import PropTypes from 'prop-types';
-import * as isEqual from 'fast-deep-equal';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core/styles';
-<<<<<<< HEAD
 
 // import createPConnectComponent from "../../bridge/react_pconnect";
 import createPConnectComponent from "@pega/react-sdk-bridge-infra/lib/bridge/react_pconnect";
 
-import Assignment from "../Assignment";
-import * as isEqual from 'fast-deep-equal';
 
-=======
-import createPConnectComponent from '../../bridge/react_pconnect';
-import Assignment from '../Assignment';
-import CancelAlert from '../forms/CancelAlert';
->>>>>>> main
+import * as isEqual from 'fast-deep-equal';
+import Assignment from "../Assignment";
+import CancelAlert from "../forms/CancelAlert";
 
 declare const PCore;
 
