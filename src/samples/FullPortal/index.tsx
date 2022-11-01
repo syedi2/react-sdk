@@ -67,11 +67,8 @@ export default function FullPortal() {
    */
    function initialRender(inRenderObj) {
 
-    // eslint-disable-next-line no-debugger
     // debugger;
-    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     // const theLocalComps = SdkComponentMap.getLocalComponentMap();
-
     // debugger;
 
     // modified from react_root.js render
@@ -134,7 +131,7 @@ export default function FullPortal() {
 
       // get the SdkComponentMap initialized with our local components from localSdkComponentMap
       // debugger;
-      getSdkComponentMap(localSdkComponentMap).then( (theComponentMap: any) => {
+      getSdkComponentMap(localSdkComponentMap).then( (/* theComponentMap: any */) => {
 
         // debugger;
         // console.log(`theComponentMap: ${JSON.stringify(theComponentMap.sdkComponentMap['localComponentMap'])}`);
