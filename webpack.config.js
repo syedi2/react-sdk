@@ -158,6 +158,7 @@ module.exports = (env, argv) => {
           include: [
             path.resolve(__dirname, 'src'),
             path.resolve(__dirname, 'node_modules/react-datepicker'),
+            path.resolve(__dirname, 'node_modules/@pega/react-sdk-bridge-infra/lib'),
           ],
           use: ['style-loader', 'css-loader']
         },
