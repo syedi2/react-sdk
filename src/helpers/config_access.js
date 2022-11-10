@@ -1,6 +1,7 @@
 // Helper singleton class to assist with loading and accessing
 //  the SDK Config JSON
 import {sdkGetAuthHeader} from './authManager';
+import Utils from './utils';
 
 // Create a singleton for this class (with async loading of config file) and export it
 // Note: Initialzing SdkConfigAccess to null seems to cause lots of compile issues with references
@@ -26,7 +27,7 @@ class ConfigAccess {
    * @returns Promise of config file fetch
    */
   async readSdkConfig() {
-    if( Object.keys(this.sdkConfig).length === 0 ) {
+    if(Utils.isEmptyObject(this.sdkConfig)) {
       return  fetch("./sdk-config.json")
         .then ( (response) => {
           if( response.ok ) {
@@ -77,7 +78,7 @@ class ConfigAccess {
    * @returns the sdk-config JSON object
    */
   getSdkConfig = async () => {
-    if( Object.keys(this.sdkConfig).length === 0 ) {
+    if(Utils.isEmptyObject(this.sdkConfig)) {
       await getSdkConfig();
     }
     return this.sdkConfig;
@@ -89,7 +90,7 @@ class ConfigAccess {
    * @returns the authConfig block in the SDK Config object
    */
   getSdkConfigAuth = () => {
-    if( Object.keys(this.sdkConfig).length === 0 ) {
+    if(Utils.isEmptyObject(this.sdkConfig)) {
       const config = this.getSdkConfig();
     }
     return this.sdkConfig["authConfig"];
@@ -100,7 +101,7 @@ class ConfigAccess {
    * @returns the serverConfig bloc from the sdk-config.json file
    */
   getSdkConfigServer = () => {
-    if( Object.keys(this.sdkConfig).length === 0 ) {
+    if(Utils.isEmptyObject(this.sdkConfig)) {
       const config = this.getSdkConfig();
     }
     return this.sdkConfig["serverConfig"];
@@ -123,7 +124,7 @@ class ConfigAccess {
    */
    async selectPortal() {
 
-    if( Object.keys(this.sdkConfig).length === 0 ) {
+    if(Utils.isEmptyObject(this.sdkConfig)) {
       await getSdkConfig();
     }
 
@@ -143,6 +144,8 @@ class ConfigAccess {
     const appAliasPath = appAlias ? `/app/${appAlias}` : '';
     const arExcludedPortals = serverConfig["excludePortals"];
 
+    // Using v1 API here as v2 data_views is not able to access same data page currently.  Should move to avoid having this logic to find
+    //  a default portal or constellation portal and rather have Constellation JS Engine API just load the default portal
     await fetch ( `${serverUrl}${appAliasPath}/api/v1/data/${dataPageName}`,
       {
         method: 'GET',
@@ -151,7 +154,17 @@ class ConfigAccess {
           'Authorization' : sdkGetAuthHeader()
         }
       })
-      .then( response => response.json())
+      .then( response => {
+        if( response.ok && response.status === 200) {
+          return response.json();
+        } else {
+          if( response.status === 401 ) {
+            // Might be either a real token expiration or revoke, but more likely that the "api" service package is misconfigured
+            throw( new Error(`Attempt to access ${dataPageName} failed.  The "api" service package is likely not configured to use "OAuth 2.0"`));
+          };
+          throw( new Error(`HTTP Error: ${response.status}`));
+        }
+      })
       .then( async (agData) => {
 
         let arAccessGroups = agData.pxResults;
@@ -163,6 +176,7 @@ class ConfigAccess {
             if( !arExcludedPortals.includes(ag.pyPortal) ) {
               selectedPortal = ag.pyPortal;
             } else {
+              console.error(`Default portal for current operator (${ag.pyPortal}) is not compatible with SDK.\nConsider using a different operator, adjusting the default portal for this operator, or using "appPortal" setting within sdk-config.json to specify a specific portal to load.`);
               // Find first portal that is not excluded (might work)
               for (let portal of ag.pyUserPortals ) {
                 if( !arExcludedPortals.includes(portal.pyPortalLayout) ) {
@@ -181,9 +195,8 @@ class ConfigAccess {
         }
       })
       .catch( e => {
-        if( e ) {
-          // check specific error if 401, and wiped out if so stored token is stale.  Fetcch new tokens.
-        }
+        console.error(e.message);
+        // check specific error if 401, and wiped out if so stored token is stale.  Fetch new tokens.
       });
 
   }

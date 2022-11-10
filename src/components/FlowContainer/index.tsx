@@ -31,10 +31,10 @@ declare const PCore;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    paddingRight: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+    paddingRight: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+    paddingTop: theme.spacing(1.5),
+    paddingBottom: theme.spacing(1.5),
     marginRight: theme.spacing(1),
     marginLeft: theme.spacing(1),
     marginTop: theme.spacing(1),
@@ -409,7 +409,7 @@ export default function FlowContainer(props) {
           currentItems[key] &&
           currentItems[key].view &&
           type === "single" &&
-          Object.keys(currentItems[key].view).length > 0) {
+          !Utils.isEmptyObject(currentItems[key].view)) {
           const currentItem = currentItems[key];
           const rootView = currentItem.view;
           const { context } = rootView.config;

@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-boolean-value */
+
 import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { Utils } from '../../../helpers/utils';
@@ -53,7 +55,7 @@ export default function CaseView(props) {
     children,
     caseInfo: { availableActions = [], availableProcesses = [], hasNewAttachments }
   } = props;
-
+  const currentCaseID = props.caseInfo.ID;
   let isComponentMounted = true;
 
   const { displayOnlyFA } = useContext(StoreContext);
@@ -102,27 +104,30 @@ export default function CaseView(props) {
   const vertTabInfo: Array<Object> = [];
 
   // deferLoadInfo is sent to DeferLoad component (currently selected entry)
-  const deferLoadInfo: Array<Object> = [];
+  const deferLoadInfo: Array<any> = [];
 
-  // populate vertTabInfo and deferLoadInfo
-  theTabsRegionChildren.forEach((tabComp, index) => {
-    const theTabCompConfig = tabComp.getPConnect().getConfigProps();
-    // eslint-disable-next-line prefer-const
-    let {label, inheritedProps} = theTabCompConfig;
-    // For some tabs, "label" property is not avaialable in theTabCompConfig, so will get them from inheritedProps
-    if(!label){
-      inheritedProps.forEach((inheritedProp) => {
-        if(inheritedProp.prop === 'label'){
-          label = inheritedProp.value;
-        }
-      });
-    }
-    // We'll display the tabs when either visibility property doesn't exist or is true(if exists)
-    if(theTabCompConfig.visibility === undefined || theTabCompConfig.visibility === true){
-      vertTabInfo.push({name: label, id: index});
-      deferLoadInfo.push( { type: "DeferLoad", config: theTabCompConfig } );
-    }
-  });
+  if (theTabsRegionChildren) {
+    // populate vertTabInfo and deferLoadInfo
+    theTabsRegionChildren.forEach((tabComp, index) => {
+      const theTabCompConfig = tabComp.getPConnect().getConfigProps();
+      // eslint-disable-next-line prefer-const
+      let { label, inheritedProps } = theTabCompConfig;
+      // For some tabs, "label" property is not avaialable in theTabCompConfig, so will get them from inheritedProps
+      if (!label) {
+        inheritedProps.forEach(inheritedProp => {
+          if (inheritedProp.prop === 'label') {
+            label = inheritedProp.value;
+          }
+        });
+      }
+      // We'll display the tabs when either visibility property doesn't exist or is true(if exists)
+      if (theTabCompConfig.visibility === undefined || theTabCompConfig.visibility === true) {
+        vertTabInfo.push({ name: label, id: index });
+        deferLoadInfo.push({ type: 'DeferLoad', config: theTabCompConfig });
+      }
+    });
+  }
+
 
 
   function handleVerticalTabClick(eventDetail: any) {
@@ -191,6 +196,7 @@ export default function CaseView(props) {
       return (
         <Grid container>
           <Grid item xs={3}>
+          <div hidden={true} id="current-caseID">{currentCaseID}</div>
           <Card className={classes.root} >
             <CardHeader className={classes.caseViewHeader}
               title={<Typography variant="h6" component="div">{header}</Typography>}
@@ -212,7 +218,7 @@ export default function CaseView(props) {
         <Grid item xs={6}>
           {theStagesRegion}
           {theTodoRegion}
-          { deferLoadInfo.length > 0 && <DeferLoad getPConnect={getPConnect} loadData={deferLoadInfo[activeVertTab] } />}
+          { deferLoadInfo.length > 0 && <DeferLoad getPConnect={getPConnect} name={deferLoadInfo[activeVertTab].config.name } isTab />}
         </Grid>
 
         <Grid item xs={3}>

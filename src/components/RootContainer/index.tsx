@@ -10,6 +10,7 @@ import { Box, CircularProgress } from "@material-ui/core";
 import StoreContext from "@pega/react-sdk-bridge-infra/lib/bridge/Context/StoreContext";
 import createPConnectComponent from "@pega/react-sdk-bridge-infra/lib/bridge/react_pconnect";
 import { LazyMap as LazyComponentMap } from "@pega/react-sdk-bridge-infra/lib/components_map";
+import Utils from '../../helpers/utils';
 
 declare const PCore;
 
@@ -39,7 +40,7 @@ function getItemView(routingInfo, renderingMode) {
       if (
         items[key] &&
         items[key].view &&
-        Object.keys(items[key].view).length > 0
+        !Utils.isEmptyObject(items[key].view)
       ) {
         viewConfigs.push(items[key]);
       }
