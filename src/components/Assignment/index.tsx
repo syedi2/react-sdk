@@ -10,6 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 declare const PCore: any;
 
 export default function Assignment(props) {
+  // console.log('props1', props);
   const { getPConnect, children, itemKey, isCreateStage } = props;
   const thePConn = getPConnect();
 
@@ -25,6 +26,7 @@ export default function Assignment(props) {
   const finishAssignment = actionsAPI.finishAssignment.bind(actionsAPI);
   const navigateToStep = actionsAPI.navigateToStep.bind(actionsAPI);
   const cancelAssignment = actionsAPI.cancelAssignment.bind(actionsAPI);
+  const saveAssignment = actionsAPI.saveAssignment.bind(actionsAPI);
   const cancelCreateStageAssignment = actionsAPI.cancelCreateStageAssignment.bind(actionsAPI);
   // const showPage = actionsAPI.showPage.bind(actionsAPI);
 
@@ -118,6 +120,11 @@ export default function Assignment(props) {
     setShowSnackbar(false);
   };
 
+  function onSaveActionSuccess(data) {
+    actionsAPI.cancelAssignment(itemKey).then(() => {
+      PCore.getPubSubUtils().publish(PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CREATE_STAGE_SAVED, data);
+    });
+  }
 
   function buttonPress(sAction: string, sButtonType: string) {
 
@@ -136,6 +143,24 @@ export default function Assignment(props) {
 
           break;
         }
+
+        case "saveAssignment" : {
+          const caseID = thePConn.getCaseInfo().getKey();
+          const assignmentID = thePConn.getCaseInfo().getAssignmentID();
+          const savePromise = saveAssignment(itemKey);
+
+          savePromise
+          .then(() => {
+            const caseType = thePConn.getCaseInfo().c11nEnv.getValue(PCore.getConstants().CASE_INFO.CASE_TYPE_ID);
+            onSaveActionSuccess({ caseType, caseID, assignmentID });
+          })
+          .catch(() => {
+            showToast('Save failed');
+          });
+
+
+            break;
+          }
 
         case "cancelAssignment": {
           // check if create stage (modal)
