@@ -44,7 +44,8 @@
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@material-ui/pickers": "^3.3.10",
     "@pega/constellationjs": "SDK-8.8.0",
-    "@pega/react-sdk-bridge-infra": "file:constellation/react-sdk-bridge-infra-0.0.23.06.tgz",
+    "@pega/react-sdk-bridge-infra": "file:constellation/react-sdk-bridge-infra-0.24.4.tgz",
+    "@types/styled-components": "^5.1.26",
     "@unicef/material-ui-currency-textfield": "^0.8.6",
     "dayjs": "^1.10.6",
     "downloadjs": "^1.4.7",
@@ -56,6 +57,7 @@
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.3.0",
+    "styled-components": "^5.2.0",
     "throttle-debounce": "^5.0.0"
   },
   "devDependencies": {
