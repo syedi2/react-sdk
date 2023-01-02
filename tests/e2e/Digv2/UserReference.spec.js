@@ -59,6 +59,8 @@ test.describe('E2E test', () => {
     await firstDropdownOption.click();
     const selectedUser = firstDropdownOption.innerHTML;
 
+    // Testing
+
     /** check readonly user reference value is same as dropdown selected user */
     const user = await page.locator('app-operator span[class="mat-button-wrapper"]').innerHTML;
     await expect(user).toBe(selectedUser);
